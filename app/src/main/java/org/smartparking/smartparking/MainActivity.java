@@ -8,13 +8,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
+    Button btn_google;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Affectation des variables : boutton, Textview
+        btn_google=(Button) findViewById(R.id.id_btn_googlemap);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -48,5 +56,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    ////////////// Fonction ajoutées (gestions actions : boutons, itents) ///////////////
+
+    // Lancement Item pour Google Map
+
+
+
+    // Fonction pour boutton Google MAP
+    public void Click_btn_google(View v) {
+        Toast.makeText(getApplicationContext(), "Lancement Google Map", Toast.LENGTH_LONG).show();
+        //Lancement Intent
     }
 }
