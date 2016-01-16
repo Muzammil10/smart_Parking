@@ -11,6 +11,9 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.parse.Parse;
+import com.parse.ParseObject;
+
 public class MainActivity extends AppCompatActivity {
 
     Button btn_google;
@@ -19,6 +22,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Parse.enableLocalDatastore(this);
+
+        Parse.initialize(this);
+        ParseObject testObject = new ParseObject("TestObject");
+        testObject.put("foo", "bar");
+        testObject.saveInBackground();
 
         // Affectation des variables : boutton, Textview
         btn_google=(Button) findViewById(R.id.id_btn_googlemap);
