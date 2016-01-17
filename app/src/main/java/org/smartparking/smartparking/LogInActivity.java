@@ -1,5 +1,6 @@
 package org.smartparking.smartparking;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -31,6 +32,12 @@ public class LogInActivity extends AppCompatActivity {
 
                     // message test
                     Toast.makeText(getApplicationContext(), "Vous êtes log", Toast.LENGTH_LONG).show();
+
+                    // Redirection vers la page d'accueuil
+                    //Lancement Intent pour Sign up
+                    Intent intend= new Intent(LogInActivity.this,AccueilActivity.class);
+                    startActivity(intend);
+
                 }
             }
         });

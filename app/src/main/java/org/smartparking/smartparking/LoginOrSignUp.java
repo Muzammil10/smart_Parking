@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginOrSignUp extends AppCompatActivity {
 
     Button signup;
     Button login;
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.logout) {
             return true;
         }
 
