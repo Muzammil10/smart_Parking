@@ -26,14 +26,15 @@ public class LoginOrSignUp extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ///////////// Base de donneés Parse /////////
+
         //Fait le lien entre la bdd et l'application
-        Parse.enableLocalDatastore(this);
+        //Parse.enableLocalDatastore(this);
         //Initialisation de la base de données
-        Parse.initialize(this);
+        //Parse.initialize(this);
         //Création d'un objet test
         ParseObject testObject = new ParseObject("TestObject");
         //Ajout des données
-        testObject.put("foo", "prout");
+        testObject.put("foo", "Docteur c grave?");
         //Eguivalent d'un update dans la bdd
         testObject.saveInBackground();
 

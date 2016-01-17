@@ -36,22 +36,13 @@ public class AccueilActivity extends AppCompatActivity {
 
             //////////// PERMET DE SE LOG OUT, A MODIFIER PAR LA SUITE /////////
 
-            // Permet de log out l'utilisateur
+            // Log out l'utilisateur
             ParseUser.getCurrentUser().logOut();
-            /*
-            // Regarde si l'utilisateur est connecté
-            ParseUser currentUser = ParseUser.getCurrentUser();
-            if (currentUser != null) {
-                // do stuff with the user
-                Toast.makeText(getApplicationContext(), "user connected", Toast.LENGTH_LONG).show();
-            } else {
-                // show the signup or login screen
-                Toast.makeText(getApplicationContext(), "No one present", Toast.LENGTH_LONG).show();
-            }
-            */
+
             // On retourne sur la Page Log in or Signup
+            // Set result permet d'envoyer la "sortie" de l'activité à l'activité inférieure.
             setResult(1);
-            finish();
+            startActivity (new Intent(this,LoginOrSignUp.class));
 
             return true;
         }
