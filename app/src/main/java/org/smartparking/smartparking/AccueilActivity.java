@@ -39,8 +39,8 @@ public class AccueilActivity extends AppCompatActivity {
             ParseUser.getCurrentUser().logOut();
             // On retourne sur la Page Log in or Signup
 
-           // Intent intend= new Intent(AccueilActivity.this,LogInActivity.class);
-            //startActivity(intend);
+            setResult(1);
+            finish();
 
             return true;
         }

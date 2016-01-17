@@ -33,14 +33,26 @@ public class LogInActivity extends AppCompatActivity {
                     // message test
                     Toast.makeText(getApplicationContext(), "Vous êtes log", Toast.LENGTH_LONG).show();
 
-                    // Redirection vers la page d'accueuil
-                    //Lancement Intent pour Sign up
-                    Intent intend= new Intent(LogInActivity.this,AccueilActivity.class);
-                    startActivity(intend);
+                    // Redirection vers la page d'accueuil de l'application
+                    startActivityForResult(new Intent(LogInActivity.this,AccueilActivity.class), 1000);
 
                 }
             }
         });
 
+    }
+
+    ////////////////// RECUPERE LE RESULTAT DE L'ACTIVITE SUIVANTE ET SE FEMRE CI BESOIN"
+    @Override
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        // on récupère le statut de retour de l'activité 2 c'est à dire l'activité numéro 1000
+        if(requestCode==1000){
+            // si le code de retour est égal à 1 on stoppe l'activité 1
+            if(resultCode==1){
+                // ferme l'actviité
+                finish();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
