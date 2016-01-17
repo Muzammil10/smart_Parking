@@ -1,5 +1,6 @@
 package org.smartparking.smartparking;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,22 +17,29 @@ import com.parse.ParseObject;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btn_google;
+    Button signup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ///////////// Base de donneés Parse /////////
+        //Fait le lien entre la bdd et l'application
         Parse.enableLocalDatastore(this);
-
+        //Initialisation de la base de données
         Parse.initialize(this);
+        //Création d'un objet test
         ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
+        //Ajout des données
+        testObject.put("foo", "prout");
+        //Eguivalent d'un update dans la bdd
         testObject.saveInBackground();
 
+
+
         // Affectation des variables : boutton, Textview
-        btn_google=(Button) findViewById(R.id.id_btn_googlemap);
+       signup=(Button) findViewById(R.id.id_signup);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -70,13 +78,15 @@ public class MainActivity extends AppCompatActivity {
 
     ////////////// Fonction ajoutées (gestions actions : boutons, itents) ///////////////
 
-    // Lancement Item pour Google Map
 
 
 
-    // Fonction pour boutton Google MAP
-    public void Click_btn_google(View v) {
-        Toast.makeText(getApplicationContext(), "Lancement Google Map", Toast.LENGTH_LONG).show();
-        //Lancement Intent
+    // Fonction pour boutton SignUp
+    public void Signup(View v) {
+        Toast.makeText(getApplicationContext(), "Enregistrez vous", Toast.LENGTH_LONG).show();
+
+        //Lancement Intent pour Sign up
+        Intent intend= new Intent(this,SignUpActivity.class);
+        startActivity(intend);
     }
 }
