@@ -21,13 +21,23 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:onClick="Signup"
         android:id="@+id/id_signup"
         android:text="Sign Up"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="34dp"
+        android:layout_alignParentEnd="true" />
 
-        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Log In"
+        android:onClick="Login"
+        android:id="@+id/id_login"
+        android:layout_below="@+id/id_signup"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="33dp"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

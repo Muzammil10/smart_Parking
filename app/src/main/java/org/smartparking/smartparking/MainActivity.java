@@ -18,6 +18,7 @@ import com.parse.ParseObject;
 public class MainActivity extends AppCompatActivity {
 
     Button signup;
+    Button login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Affectation des variables : boutton, Textview
-       signup=(Button) findViewById(R.id.id_signup);
+        signup=(Button) findViewById(R.id.id_signup);
+        login=(Button) findViewById(R.id.id_login);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -78,10 +80,12 @@ public class MainActivity extends AppCompatActivity {
 
     ////////////// Fonction ajoutées (gestions actions : boutons, itents) ///////////////
 
+    // Fonction boutton log in
+    public void Login(View v ){
+        Toast.makeText(getApplicationContext(), "Connectez vous", Toast.LENGTH_LONG).show();
+    }
 
-
-
-    // Fonction pour boutton SignUp
+    // Fonction boutton SignUp
     public void Signup(View v) {
         Toast.makeText(getApplicationContext(), "Enregistrez vous", Toast.LENGTH_LONG).show();
 
