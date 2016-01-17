@@ -82,11 +82,17 @@ public class MainActivity extends AppCompatActivity {
 
     // Fonction boutton log in
     public void Login(View v ){
+        // Message envoyé à l'utilisateur
         Toast.makeText(getApplicationContext(), "Connectez vous", Toast.LENGTH_LONG).show();
+
+        //Lancement Intent pour Login
+        Intent intend= new Intent(this,LogInActivity.class);
+        startActivity(intend);
     }
 
     // Fonction boutton SignUp
     public void Signup(View v) {
+        // Message envoyé à l'utilisateur
         Toast.makeText(getApplicationContext(), "Enregistrez vous", Toast.LENGTH_LONG).show();
 
         //Lancement Intent pour Sign up
