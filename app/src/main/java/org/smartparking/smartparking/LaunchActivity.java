@@ -9,7 +9,7 @@ import android.widget.Toast;
 import com.parse.Parse;
 import com.parse.ParseUser;
 
-public class Launch extends AppCompatActivity {
+public class LaunchActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

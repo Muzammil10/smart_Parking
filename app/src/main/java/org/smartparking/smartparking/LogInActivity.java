@@ -3,6 +3,8 @@ package org.smartparking.smartparking;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.parse.LogInCallback;
@@ -13,12 +15,40 @@ import java.text.ParseException;
 //Activité permettant de gérer le login des userse dans l'application
 public class LogInActivity extends AppCompatActivity {
 
+    private EditText usernameView;
+    private EditText passwordView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
-        ParseUser.logInInBackground("my name", "my pass", new LogInCallback() {
+        usernameView= (EditText) findViewById(R.id.username);
+        passwordView= (EditText) findViewById(R.id.password);
+
+    }
+
+    ////////////////////////// FONCTIONS /////////////////////////
+
+    //RECUPERE LE RESULTAT DE L'ACTIVITE SUIVANTE ET SE FEMRE CI BESOIN"
+    @Override
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        // on récupère le statut de retour de l'activité 2 c'est à dire l'activité numéro 1000
+        if(requestCode==1000){
+
+            // si le code de retour est égal à 1 on stoppe l'activité 1
+            if(resultCode==1){
+                // ferme l'actviité
+                finish();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void btn_Login(View view) {
+
+        // Intéragit avec la base de données pour vérification des données
+        ParseUser.logInInBackground(usernameView.getText().toString(), passwordView.getText().toString(), new LogInCallback() {
             @Override
             public void done(ParseUser parseUser, com.parse.ParseException e) {
                 if (e != null) {
@@ -40,20 +70,6 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
 
-    }
 
-    ////////////////// RECUPERE LE RESULTAT DE L'ACTIVITE SUIVANTE ET SE FEMRE CI BESOIN"
-    @Override
-    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
-        // on récupère le statut de retour de l'activité 2 c'est à dire l'activité numéro 1000
-        if(requestCode==1000){
-
-            // si le code de retour est égal à 1 on stoppe l'activité 1
-            if(resultCode==1){
-                // ferme l'actviité
-                finish();
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 }

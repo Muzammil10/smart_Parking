@@ -38,8 +38,6 @@ public class LoginOrSignUp extends AppCompatActivity {
         //Eguivalent d'un update dans la bdd
         testObject.saveInBackground();
 
-
-
         // Affectation des variables : boutton, Textview
         signup=(Button) findViewById(R.id.id_signup);
         login=(Button) findViewById(R.id.id_login);
@@ -74,7 +72,7 @@ public class LoginOrSignUp extends AppCompatActivity {
     ////////////// Fonction ajoutées (gestions actions : boutons, itents) ///////////////
 
     // Fonction boutton log in
-    public void Login(View v ){
+    public void Loginbtn(View v ){
         // Message envoyé à l'utilisateur
         Toast.makeText(getApplicationContext(), "Connectez vous", Toast.LENGTH_LONG).show();
 
@@ -84,7 +82,7 @@ public class LoginOrSignUp extends AppCompatActivity {
     }
 
     // Fonction boutton SignUp
-    public void Signup(View v) {
+    public void Signupbtn(View v) {
         // Message envoyé à l'utilisateur
         Toast.makeText(getApplicationContext(), "Enregistrez vous", Toast.LENGTH_LONG).show();
 
