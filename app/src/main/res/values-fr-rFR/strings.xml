@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SmartParking</string>
+    <string name="action_logout">Deconnexion</string>
+    <string name="username">Pseudo</string>
+    <string name="password">Mot de Passe</string>
+</resources>

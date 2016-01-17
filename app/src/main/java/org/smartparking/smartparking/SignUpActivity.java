@@ -28,10 +28,9 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void done(com.parse.ParseException e) {
                 if (e == null) {
-                    // Accès à l'application, donc chargement de l'Accueuil
+                    // Accès à l'application, donc on revient à la page : Signup or Log in
                 } else {
-                    // Sign up didn't succeed. Look at the ParseException
-                    // to figure out what went wrong
+                    // Sign up n'a pas marché, texte vide etc.
                 }
             }
         });

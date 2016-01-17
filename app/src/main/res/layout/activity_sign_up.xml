@@ -9,11 +9,22 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="org.smartparking.smartparking.SignUpActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        />
+        android:hint="@string/username"
+        android:maxLines="1"
+        android:singleLine="true" />
 
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:hint="@string/password"
+        android:layout_below="@+id/username"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
