@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.parse.ParseUser;
 
@@ -37,8 +38,18 @@ public class AccueilActivity extends AppCompatActivity {
 
             // Permet de log out l'utilisateur
             ParseUser.getCurrentUser().logOut();
+            /*
+            // Regarde si l'utilisateur est connecté
+            ParseUser currentUser = ParseUser.getCurrentUser();
+            if (currentUser != null) {
+                // do stuff with the user
+                Toast.makeText(getApplicationContext(), "user connected", Toast.LENGTH_LONG).show();
+            } else {
+                // show the signup or login screen
+                Toast.makeText(getApplicationContext(), "No one present", Toast.LENGTH_LONG).show();
+            }
+            */
             // On retourne sur la Page Log in or Signup
-
             setResult(1);
             finish();
 
