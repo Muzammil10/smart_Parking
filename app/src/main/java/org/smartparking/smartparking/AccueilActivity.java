@@ -21,6 +21,8 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.w3c.dom.Text;
+
 import java.text.ParseException;
 import java.util.List;
 
@@ -31,6 +33,7 @@ public class AccueilActivity extends AppCompatActivity {
     private LocationManager locationManager;
     private double latitude;
     private double longitude;
+    private TextView test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,7 @@ public class AccueilActivity extends AppCompatActivity {
 
         launchgoogleView = (Button) findViewById(R.id.btn_launch_map);
         saveplaceView = (Button) findViewById(R.id.btn_saveplace);
+        test=(TextView) findViewById(R.id.textView2);
 
     }
 
@@ -105,15 +109,31 @@ public class AccueilActivity extends AppCompatActivity {
         //Maintenant il faut stocker la longtitude et la latitude dans la base de données (donc dans Parse)
 
         //On crée l'objet place libre dans la base de données Parse
-        ParseObject places_libres = new ParseObject("Places_Libres");
-        ParseGeoPoint point = new ParseGeoPoint(latitude, longitude);
-        places_libres.put("Location", point);
+        final ParseObject places_libres = new ParseObject("Places_Libre");
+        places_libres.put("latitude", latitude);
+        places_libres.put("longitude", longitude);
         places_libres.saveInBackground();
 
+      /*  ParseGeoPoint point = new ParseGeoPoint(latitude, longitude);
+        places_libres.put("Location", point);
+        places_libres.saveInBackground();*/
 
-        //////////////////// TESTS ////////
+
+
         // Récupère les coordonnées (latitude et longitutde) de toutes les places libres.
-
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Places_Libre");
+        query.getInBackground("ZdB4Ot7wj2", new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject parseObject, com.parse.ParseException e) {
+                if (e == null) {
+                    // object will be your game score
+                    test.append("\nok"+ parseObject.getDouble("latitude")+ " " + parseObject.getDouble("latitude"));
+                } else {
+                    // something went wrong
+                    test.append("\nerrror");
+                }
+            }
+        });
 
 
         Toast.makeText(getApplicationContext(), "Place Libre Sauvegardée", Toast.LENGTH_LONG).show();
