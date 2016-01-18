@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseGeoPoint;
@@ -34,6 +35,7 @@ public class AccueilActivity extends AppCompatActivity {
     private double latitude;
     private double longitude;
     private TextView test;
+    private List<ParseObject> ob;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +123,7 @@ public class AccueilActivity extends AppCompatActivity {
 
 
         // Récupère les coordonnées (latitude et longitutde) de toutes les places libres.
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Places_Libre");
+       /*ParseQuery<ParseObject> query = ParseQuery.getQuery("Places_Libre");
         query.getInBackground("ZdB4Ot7wj2", new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject parseObject, com.parse.ParseException e) {
@@ -133,8 +135,23 @@ public class AccueilActivity extends AppCompatActivity {
                     test.append("\nerrror");
                 }
             }
-        });
+        });*/
 
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Places_Libre");
+        try {
+            ob= query.find();
+            test.append("\nok" + ob.size());
+
+            for (int i=0; i < ob.size(); i++) {
+                if (ob.get(i).getDouble("latitude") == 50 ) {
+                    test.append("\n ENFFINNNNNNN");
+                }
+            }
+
+
+        } catch (com.parse.ParseException e) {
+            e.printStackTrace();
+        }
 
         Toast.makeText(getApplicationContext(), "Place Libre Sauvegardée", Toast.LENGTH_LONG).show();
 
