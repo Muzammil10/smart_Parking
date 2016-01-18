@@ -6,6 +6,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +14,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.text.ParseException;
+import java.util.List;
 
 public class AccueilActivity extends AppCompatActivity {
 
@@ -21,15 +30,15 @@ public class AccueilActivity extends AppCompatActivity {
     public Button saveplaceView;
     private LocationManager locationManager;
     private double latitude;
-    private double longtitude;
+    private double longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accueil);
 
-        launchgoogleView= (Button) findViewById(R.id.btn_launch_map);
-        saveplaceView=(Button) findViewById(R.id.btn_saveplace);
+        launchgoogleView = (Button) findViewById(R.id.btn_launch_map);
+        saveplaceView = (Button) findViewById(R.id.btn_saveplace);
 
     }
 
@@ -58,7 +67,7 @@ public class AccueilActivity extends AppCompatActivity {
             // On retourne sur la Page Log in or Signup
             // Set result permet d'envoyer la "sortie" de l'activité à l'activité inférieure.
             setResult(1);
-            startActivity (new Intent(this,LoginOrSignUp.class));
+            startActivity(new Intent(this, LoginOrSignUp.class));
 
             return true;
         }
@@ -74,7 +83,7 @@ public class AccueilActivity extends AppCompatActivity {
 
         Toast.makeText(getApplicationContext(), "Lancement Google Map", Toast.LENGTH_LONG).show();
 
-        startActivity(new Intent (this, MapsActivity.class));
+        startActivity(new Intent(this, MapsActivity.class));
 
     }
 
@@ -90,8 +99,20 @@ public class AccueilActivity extends AppCompatActivity {
 
         // ATTENTION IL FAUT GERER LES PERMISSIONS (regarder favori sur gps)
 
-        latitude=locationManager.getLastKnownLocation("gps").getLatitude();
-        longtitude=locationManager.getLastKnownLocation("gps").getLongitude();
+        latitude = locationManager.getLastKnownLocation("gps").getLatitude();
+        longitude = locationManager.getLastKnownLocation("gps").getLongitude();
+
+        //Maintenant il faut stocker la longtitude et la latitude dans la base de données (donc dans Parse)
+
+        //On crée l'objet place libre dans la base de données Parse
+        ParseObject places_libres = new ParseObject("Places_Libres");
+        ParseGeoPoint point = new ParseGeoPoint(latitude, longitude);
+        places_libres.put("Location", point);
+        places_libres.saveInBackground();
+
+
+        //////////////////// TESTS ////////
+        // Récupère les coordonnées (latitude et longitutde) de toutes les places libres.
 
 
 

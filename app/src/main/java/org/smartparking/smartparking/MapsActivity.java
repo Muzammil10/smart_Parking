@@ -39,9 +39,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Paramètrage de la carte (avec les boutons zoom, localisation ...)
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
-       // mMap.getUiSettings().setCompassEnabled(true);
+        mMap.getUiSettings().setCompassEnabled(true);
         mMap.getUiSettings().setRotateGesturesEnabled(true);
         mMap.getUiSettings().setZoomGesturesEnabled(true);
+
+        // Affiche la position sur la carte (ATTENTION PERMISSION)
+        //mMap.setMyLocationEnabled(true);
 
         ///// Il faut afficher toutes les places libre, et mettre un marqueur dessus : donc lecture bdd.
 
