@@ -36,4 +36,6 @@
         android:onClick="btn_sauvegardeplace"
         android:layout_alignEnd="@+id/btn_launch_map" />
 
+
+
 </RelativeLayout>
