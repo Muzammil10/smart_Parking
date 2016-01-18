@@ -13,7 +13,8 @@ import com.parse.ParseUser;
 
 public class AccueilActivity extends AppCompatActivity {
 
-    private Button launchgoogleView;
+    public Button launchgoogleView;
+    public Button saveplaceView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +22,7 @@ public class AccueilActivity extends AppCompatActivity {
         setContentView(R.layout.activity_accueil);
 
         launchgoogleView= (Button) findViewById(R.id.btn_launch_map);
-
+        saveplaceView=(Button) findViewById(R.id.btn_saveplace);
     }
 
     @Override
@@ -59,6 +60,8 @@ public class AccueilActivity extends AppCompatActivity {
 
     ////////////////////////////////// FONCTIONS AJOUTEES//////////
 
+
+    // Affiche les places libres
     public void btn_google(View view) {
 
         Toast.makeText(getApplicationContext(), "Lancement Google Map", Toast.LENGTH_LONG).show();
@@ -67,8 +70,9 @@ public class AccueilActivity extends AppCompatActivity {
 
     }
 
+    // Sauvegarde une place libre sur la position actuelle
+    public void btn_sauvegardeplace(View view) {
 
-
-
-
+        Toast.makeText(getApplicationContext(), "Place Libre Sauvegardée", Toast.LENGTH_LONG).show();
+    }
 }

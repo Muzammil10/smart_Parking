@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.parse.Parse;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 
 public class LoginOrSignUp extends AppCompatActivity {
@@ -26,7 +27,7 @@ public class LoginOrSignUp extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ///////////// Base de donneés Parse /////////
-
+/*
         //Fait le lien entre la bdd et l'application
         //Parse.enableLocalDatastore(this);
         //Initialisation de la base de données
@@ -37,6 +38,14 @@ public class LoginOrSignUp extends AppCompatActivity {
         testObject.put("foo", "Docteur c grave?");
         //Eguivalent d'un update dans la bdd
         testObject.saveInBackground();
+*/
+        /*
+        // Test ajout Geopoint
+        ParseObject globeobject = new ParseObject("global");
+        ParseGeoPoint point = new ParseGeoPoint(40.0, -30.0);
+        globeobject.put("Location", point);
+        globeobject.saveInBackground();
+        */
 
         // Affectation des variables : boutton, Textview
         signup=(Button) findViewById(R.id.id_signup);

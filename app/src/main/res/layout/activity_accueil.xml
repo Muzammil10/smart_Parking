@@ -26,4 +26,14 @@
         android:onClick="btn_google"
         android:layout_alignParentEnd="true" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sauvegarde place libre"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/btn_saveplace"
+        android:onClick="btn_sauvegardeplace"
+        android:layout_alignEnd="@+id/btn_launch_map" />
+
 </RelativeLayout>
