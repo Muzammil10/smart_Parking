@@ -5,16 +5,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.parse.ParseUser;
 
 public class AccueilActivity extends AppCompatActivity {
 
+    private Button launchgoogleView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accueil);
+
+        launchgoogleView= (Button) findViewById(R.id.btn_launch_map);
+
     }
 
     @Override
@@ -49,4 +56,19 @@ public class AccueilActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    ////////////////////////////////// FONCTIONS AJOUTEES//////////
+
+    public void btn_google(View view) {
+
+        Toast.makeText(getApplicationContext(), "Lancement Google Map", Toast.LENGTH_LONG).show();
+
+        startActivity(new Intent (this, MapsActivity.class));
+
+    }
+
+
+
+
+
 }
