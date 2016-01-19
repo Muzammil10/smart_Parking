@@ -1,9 +1,14 @@
 package org.smartparking.smartparking;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,10 +37,11 @@ public class AccueilActivity extends AppCompatActivity {
     public Button launchgoogleView;
     public Button saveplaceView;
     private LocationManager locationManager;
+    private LocationListener locationListener;
     private double latitude;
     private double longitude;
     private TextView test;
-    private List<ParseObject> ob;
+    //private List<ParseObject> ob;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +50,59 @@ public class AccueilActivity extends AppCompatActivity {
 
         launchgoogleView = (Button) findViewById(R.id.btn_launch_map);
         saveplaceView = (Button) findViewById(R.id.btn_saveplace);
-        test=(TextView) findViewById(R.id.textView2);
+        test = (TextView) findViewById(R.id.textView2);
 
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                test.append("\n" + location.getLatitude() + " "+ location.getLongitude());
+                locationManager.removeUpdates(locationListener);
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                Intent intent= new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+                };
+
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        requestPermissions(new String[] {
+                        Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.INTERNET
+                        },10);
+                    }
+                    //return;
+                } else {
+                    btn_sauvegardeplace();
+                }
+
+            }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch(requestCode){
+            case 10:
+                if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    btn_sauvegardeplace();
+                }
+               // return;
+        }
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+            public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
@@ -94,24 +147,33 @@ public class AccueilActivity extends AppCompatActivity {
     }
 
     // Sauvegarde une place libre sur la position actuelle
-    public void btn_sauvegardeplace(View view) {
+    public void btn_sauvegardeplace() {
+
+        saveplaceView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locationManager.requestLocationUpdates("gps",0, 0, locationListener);
+
+            }
+        });
+
 
         // Fonction qui récupère la position actuelle et la stocke dans la base de données
-
         // Lance le service de localisation
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
+//        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         // Récupération de la latitude et la longittude
 
-        // ATTENTION IL FAUT GERER LES PERMISSIONS (regarder favori sur gps)
+        // locationManager.getLastKnownLocation("gps").getLatitude();
+        // locationManager.getLastKnownLocation("gps").getLongitude();
 
-        latitude = locationManager.getLastKnownLocation("gps").getLatitude();
-        longitude = locationManager.getLastKnownLocation("gps").getLongitude();
+        ///////////////////// PARSEEEEEEEEEEEEE/////////
+
+
 
         //Maintenant il faut stocker la longtitude et la latitude dans la base de données (donc dans Parse)
 
         //On crée l'objet place libre dans la base de données Parse
-        final ParseObject places_libres = new ParseObject("Places_Libre");
+       /* final ParseObject places_libres = new ParseObject("Places_Libre");
         places_libres.put("latitude", latitude);
         places_libres.put("longitude", longitude);
         places_libres.saveInBackground();
@@ -137,7 +199,7 @@ public class AccueilActivity extends AppCompatActivity {
             }
         });*/
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Places_Libre");
+     /*   ParseQuery<ParseObject> query = ParseQuery.getQuery("Places_Libre");
         try {
             ob= query.find();
             test.append("\nok" + ob.size());
@@ -152,8 +214,10 @@ public class AccueilActivity extends AppCompatActivity {
         } catch (com.parse.ParseException e) {
             e.printStackTrace();
         }
-
+*/
         Toast.makeText(getApplicationContext(), "Place Libre Sauvegardée", Toast.LENGTH_LONG).show();
 
     }
+
+
 }
