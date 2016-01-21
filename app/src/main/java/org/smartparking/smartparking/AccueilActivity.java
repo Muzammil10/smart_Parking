@@ -41,7 +41,6 @@ public class AccueilActivity extends AppCompatActivity {
     private double latitude;
     private double longitude;
     private TextView test;
-    //private List<ParseObject> ob;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +51,35 @@ public class AccueilActivity extends AppCompatActivity {
         saveplaceView = (Button) findViewById(R.id.btn_saveplace);
         test = (TextView) findViewById(R.id.textView2);
 
+
+        // Lance le service de localisation
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        // Creation d'un listerner pour update la localisation
         locationListener = new LocationListener() {
             @Override
+            //Fonction appelé quand il y a un changement de lattitude ou longitude.
             public void onLocationChanged(Location location) {
-                test.append("\n" + location.getLatitude() + " "+ location.getLongitude());
+                //Stock la latitude et la longtitude
+                latitude=location.getLatitude();
+                longitude=location.getLongitude();
+
+                // Stock la latitude et la longitutde dans la base de données
+
+                final ParseObject places_libres = new ParseObject("Places_Libres");
+                // On crée un Geopoint pour l'utiliser par la suite si nécessaire
+
+                ParseGeoPoint point = new ParseGeoPoint(latitude, longitude);
+                // On crée ces 2 colonnes pour facilité la récupération de ces 2 attributs
+
+                places_libres.put("latitude", latitude);
+                places_libres.put("longitude", longitude);
+                places_libres.put("Location", point);
+                places_libres.saveInBackground();
+
+
+                Toast.makeText(getApplicationContext(), "Place Libre Sauvegardée", Toast.LENGTH_LONG).show();
+
+                //Arrete l'écoute
                 locationManager.removeUpdates(locationListener);
             }
 
@@ -152,70 +175,10 @@ public class AccueilActivity extends AppCompatActivity {
         saveplaceView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                locationManager.requestLocationUpdates("gps",0, 0, locationListener);
+                locationManager.requestLocationUpdates("gps", 0, 0, locationListener);
 
             }
         });
-
-
-        // Fonction qui récupère la position actuelle et la stocke dans la base de données
-        // Lance le service de localisation
-//        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        // Récupération de la latitude et la longittude
-
-        // locationManager.getLastKnownLocation("gps").getLatitude();
-        // locationManager.getLastKnownLocation("gps").getLongitude();
-
-        ///////////////////// PARSEEEEEEEEEEEEE/////////
-
-
-
-        //Maintenant il faut stocker la longtitude et la latitude dans la base de données (donc dans Parse)
-
-        //On crée l'objet place libre dans la base de données Parse
-       /* final ParseObject places_libres = new ParseObject("Places_Libre");
-        places_libres.put("latitude", latitude);
-        places_libres.put("longitude", longitude);
-        places_libres.saveInBackground();
-
-      /*  ParseGeoPoint point = new ParseGeoPoint(latitude, longitude);
-        places_libres.put("Location", point);
-        places_libres.saveInBackground();*/
-
-
-
-        // Récupère les coordonnées (latitude et longitutde) de toutes les places libres.
-       /*ParseQuery<ParseObject> query = ParseQuery.getQuery("Places_Libre");
-        query.getInBackground("ZdB4Ot7wj2", new GetCallback<ParseObject>() {
-            @Override
-            public void done(ParseObject parseObject, com.parse.ParseException e) {
-                if (e == null) {
-                    // object will be your game score
-                    test.append("\nok"+ parseObject.getDouble("latitude")+ " " + parseObject.getDouble("latitude"));
-                } else {
-                    // something went wrong
-                    test.append("\nerrror");
-                }
-            }
-        });*/
-
-     /*   ParseQuery<ParseObject> query = ParseQuery.getQuery("Places_Libre");
-        try {
-            ob= query.find();
-            test.append("\nok" + ob.size());
-
-            for (int i=0; i < ob.size(); i++) {
-                if (ob.get(i).getDouble("latitude") == 50 ) {
-                    test.append("\n ENFFINNNNNNN");
-                }
-            }
-
-
-        } catch (com.parse.ParseException e) {
-            e.printStackTrace();
-        }
-*/
-        Toast.makeText(getApplicationContext(), "Place Libre Sauvegardée", Toast.LENGTH_LONG).show();
 
     }
 
