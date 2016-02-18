@@ -7,6 +7,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.net.wifi.WifiConfiguration;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
@@ -35,6 +36,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 
 public class AccueilActivity extends AppCompatActivity {
 
@@ -74,6 +77,8 @@ public class AccueilActivity extends AppCompatActivity {
             for (int i=0; i < ob.size(); i++) {
 
                 date=ob.get(i).getCreatedAt();
+                //Attention ne pas oublier de changer le GMT
+                SimpleTimeZone.setDefault(TimeZone.getTimeZone("UTP"));
                 Format formatter = new SimpleDateFormat("HH:mm");
                 s = formatter.format(ob.get(i).getCreatedAt());
 
