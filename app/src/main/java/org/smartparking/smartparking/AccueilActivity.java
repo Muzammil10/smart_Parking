@@ -30,7 +30,10 @@ import com.parse.ParseUser;
 
 import org.w3c.dom.Text;
 
+import java.text.Format;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class AccueilActivity extends AppCompatActivity {
@@ -47,6 +50,11 @@ public class AccueilActivity extends AppCompatActivity {
     private int flag_autosave=0;
     private TextView test;
 
+
+    private List<ParseObject> ob;
+    private Date date;
+    private String s;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +65,24 @@ public class AccueilActivity extends AppCompatActivity {
         autosave=(Button) findViewById(R.id.btn_autosave);
         test = (TextView) findViewById(R.id.textView2);
 
-        btn_automatique_save();
+        // Récupération base de données.
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Places_Libres");
+        // limite à 1 résultat
+        // query.setLimit(1);
+        try {
+            ob= query.find();
+            for (int i=0; i < ob.size(); i++) {
 
+                date=ob.get(i).getCreatedAt();
+                Format formatter = new SimpleDateFormat("HH:mm");
+                s = formatter.format(ob.get(i).getCreatedAt());
+
+                test.append("\n"+s);
+
+            }
+        } catch (com.parse.ParseException e) {
+            e.printStackTrace();
+        }
         // Lance le service de localisation
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         // Creation d'un listerner pour update la localisation
