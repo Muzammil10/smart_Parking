@@ -35,6 +35,18 @@
         android:id="@+id/btn_saveplace"
         android:layout_alignEnd="@+id/btn_launch_map" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sauvegarde automatique"
+        android:layout_marginTop="74dp"
+        android:id="@+id/btn_autosave"
+        android:layout_below="@+id/btn_saveplace"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
 
 
 </RelativeLayout>

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
@@ -36,10 +37,14 @@ public class AccueilActivity extends AppCompatActivity {
 
     public Button launchgoogleView;
     public Button saveplaceView;
+    private Button autosave;
     private LocationManager locationManager;
     private LocationListener locationListener;
     private double latitude;
     private double longitude;
+    private float vitesse;
+    private int flag_manuelle_save=0;
+    private int flag_autosave=0;
     private TextView test;
 
     @Override
@@ -49,8 +54,10 @@ public class AccueilActivity extends AppCompatActivity {
 
         launchgoogleView = (Button) findViewById(R.id.btn_launch_map);
         saveplaceView = (Button) findViewById(R.id.btn_saveplace);
+        autosave=(Button) findViewById(R.id.btn_autosave);
         test = (TextView) findViewById(R.id.textView2);
 
+        btn_automatique_save();
 
         // Lance le service de localisation
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -63,24 +70,42 @@ public class AccueilActivity extends AppCompatActivity {
                 latitude=location.getLatitude();
                 longitude=location.getLongitude();
 
-                // Stock la latitude et la longitutde dans la base de données
+                // Permet de récupérer la vitesse de l'utilisateur grâce au GPS
+                vitesse =location.getSpeed();
+                test.append("Vitesse enregistré:"+vitesse+"\n");
 
-                final ParseObject places_libres = new ParseObject("Places_Libres");
-                // On crée un Geopoint pour l'utiliser par la suite si nécessaire
+                // AJOUTE MANUELLEMENT UNE PLACE
+                if (flag_manuelle_save==1) {
+                    // Stock la latitude et la longitutde dans la base de données
+                    final ParseObject places_libres = new ParseObject("Places_Libres");
+                    // On crée un Geopoint pour l'utiliser par la suite si nécessaire
 
-                ParseGeoPoint point = new ParseGeoPoint(latitude, longitude);
-                // On crée ces 2 colonnes pour facilité la récupération de ces 2 attributs
+                    ParseGeoPoint point = new ParseGeoPoint(latitude, longitude);
+                    // On crée ces 2 colonnes pour facilité la récupération de ces 2 attributs
 
-                places_libres.put("latitude", latitude);
-                places_libres.put("longitude", longitude);
-                places_libres.put("Location", point);
-                places_libres.saveInBackground();
+                    places_libres.put("latitude", latitude);
+                    places_libres.put("longitude", longitude);
+                    places_libres.put("Location", point);
+                    places_libres.saveInBackground();
 
 
-                Toast.makeText(getApplicationContext(), "Place Libre Sauvegardée", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Place Libre Sauvegardée", Toast.LENGTH_LONG).show();
 
-                //Arrete l'écoute
-                locationManager.removeUpdates(locationListener);
+                    //Arrete l'écoute si on enregistre manuellement la place
+                    // Attention, ne pas oublier de remettre le flag à 0
+                    flag_manuelle_save = 0;
+                    locationManager.removeUpdates(locationListener);
+                }
+
+
+                // AJOUTE AUTOMATIQUEMENT UNE PLACE
+                if (flag_autosave==1) {
+
+                    // Préviens du lancement du service
+                    Toast.makeText(getApplicationContext(), "Activation du service d'ajout automatique de places", Toast.LENGTH_LONG).show();
+                    // Attention, ne pas oublier de remettre le flag à 0
+                    flag_autosave = 0;
+                }
             }
 
             @Override
@@ -111,13 +136,14 @@ public class AccueilActivity extends AppCompatActivity {
                     btn_sauvegardeplace();
                 }
 
-            }
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch(requestCode){
             case 10:
                 if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+
                     btn_sauvegardeplace();
                 }
                // return;
@@ -169,14 +195,26 @@ public class AccueilActivity extends AppCompatActivity {
 
     }
 
-    // Sauvegarde une place libre sur la position actuelle
+    // Sauvegarde une place libre grâce à la position actuelle
     public void btn_sauvegardeplace() {
 
         saveplaceView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                flag_manuelle_save=1;
                 locationManager.requestLocationUpdates("gps", 0, 0, locationListener);
+            }
+        });
+    }
 
+    // Sauvegarde automatiquement une place grâce à la vitesse
+    public void btn_automatique_save() {
+
+        autosave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flag_autosave=1;
+                locationManager.requestLocationUpdates("gps", 0, 0, locationListener);
             }
         });
 
