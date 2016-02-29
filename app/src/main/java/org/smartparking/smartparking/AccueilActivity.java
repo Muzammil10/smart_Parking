@@ -78,7 +78,7 @@ public class AccueilActivity extends AppCompatActivity {
 
                 date=ob.get(i).getCreatedAt();
                 //Attention ne pas oublier de changer le GMT
-                SimpleTimeZone.setDefault(TimeZone.getTimeZone("UTP"));
+                SimpleTimeZone.setDefault(TimeZone.getTimeZone("GMT+1"));
                 Format formatter = new SimpleDateFormat("HH:mm");
                 s = formatter.format(ob.get(i).getCreatedAt());
 
@@ -131,7 +131,7 @@ public class AccueilActivity extends AppCompatActivity {
                 if (flag_autosave==1) {
 
                     // Préviens du lancement du service
-                    Toast.makeText(getApplicationContext(), "Activation du service d'ajout automatique de places", Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getApplicationContext(), "Activation du service d'ajout automatique de places", Toast.LENGTH_LONG).show();
                     // Attention, ne pas oublier de remettre le flag à 0
                     flag_autosave = 0;
                 }
@@ -162,7 +162,8 @@ public class AccueilActivity extends AppCompatActivity {
                     }
                     //return;
                 } else {
-                    btn_sauvegardeplace();
+                   btn_sauvegardeplace();
+                    btn_automatique_save();
                 }
 
     }
@@ -174,6 +175,7 @@ public class AccueilActivity extends AppCompatActivity {
                 if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
 
                     btn_sauvegardeplace();
+                    btn_automatique_save();
                 }
                // return;
         }
@@ -243,6 +245,7 @@ public class AccueilActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 flag_autosave=1;
+                Toast.makeText(getApplicationContext(), "Activation du service d'ajout automatique de places", Toast.LENGTH_LONG).show();
                 locationManager.requestLocationUpdates("gps", 0, 0, locationListener);
             }
         });
