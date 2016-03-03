@@ -12,12 +12,14 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.util.Date;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -26,6 +28,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private List<ParseObject> ob;
     private double latitude;
     private double longitude;
+    private Date oldplace;
+    private Date newplace;
+    private boolean vadisparaitre=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +64,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         ///// Il faut afficher toutes les places libre, et mettre un marqueur dessus : donc lecture bdd.
 
+        // Récupération base de données.
 
+        // MARQUEUR POUR LES VIEILLES PLACES
+        oldplace=new Date();
+
+        //On indique qu'on recupère que les places libre marquée dans les 10 derniere minutes
+        oldplace.setMinutes(oldplace.getMinutes()-10);
                 // Récupération base de données.
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("Places_Libres");
-                // limite à 1 résultat
-               // query.setLimit(1);
+                 query.whereGreaterThan("createdAt", oldplace);
+
                 try {
                     ob= query.find();
                     for (int i=0; i < ob.size(); i++) {
@@ -71,26 +82,49 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         latitude=ob.get(i).getDouble("latitude");
                         longitude=ob.get(i).getDouble("longitude");
 
-                        createMarker(latitude, longitude).showInfoWindow();
+                        vadisparaitre= true;
+                        createMarker(latitude, longitude, vadisparaitre).showInfoWindow();
 
 
                     }
                 } catch (com.parse.ParseException e) {
                     e.printStackTrace();
                 }
+        // MARQUEUR POUR LES nouvelles places
+        newplace=new Date();
 
-        // Permet d'afficher un marker
-        /*// Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        //On indique qu'on recupère que les places libre marquée dans les 10 derniere minutes
+        newplace.setMinutes(newplace.getMinutes() - 5);
+        // Récupération base de données.
+        ParseQuery<ParseObject> query2 = ParseQuery.getQuery("Places_Libres");
+        query2.whereGreaterThan("createdAt", newplace);
+
+        try {
+            ob= query2.find();
+            for (int i=0; i < ob.size(); i++) {
+
+                latitude=ob.get(i).getDouble("latitude");
+                longitude=ob.get(i).getDouble("longitude");
+
+                vadisparaitre= false;
+                createMarker(latitude, longitude, vadisparaitre).showInfoWindow();
 
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
+            }
+        } catch (com.parse.ParseException e) {
+            e.printStackTrace();
+        }
 
     }
-    public Marker createMarker(double latitude, double longitude) {
-        return mMap.addMarker(new MarkerOptions()
+    public Marker createMarker(double latitude, double longitude, boolean disparition) {
+        if (disparition==true) {
+            return mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(latitude, longitude))
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+        } else {return mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(latitude, longitude))
-                );
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+        }
+
     }
 }
