@@ -34,6 +34,7 @@ import org.w3c.dom.Text;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.SimpleTimeZone;
@@ -56,8 +57,9 @@ public class AccueilActivity extends AppCompatActivity {
 
 
     private List<ParseObject> ob;
-    private Date date;
     private String s;
+    private Date date;
+    private ArrayList<String> listedate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,25 +72,38 @@ public class AccueilActivity extends AppCompatActivity {
         test = (TextView) findViewById(R.id.textView2);
 
         // Récupération base de données.
+        date=new Date();
+
+        //On indique qu'on recupère que les places libre marquée dans les 10 derniere minutes
+        date.setMinutes(date.getMinutes()-10);
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Places_Libres");
-        // limite à 1 résultat
-        // query.setLimit(1);
+
+        // Compare les 2 date et s'assurent qu'il y a moins de 10 entres chacune.
+        query.whereGreaterThan("createdAt", date);
+
         try {
             ob = query.find();
+            // Permet d'afficher la liste de dates correspondant au QUERY ci dessus
             for (int i = 0; i < ob.size(); i++) {
-
-                date = ob.get(i).getCreatedAt();
                 //Attention ne pas oublier de changer le GMT
                 SimpleTimeZone.setDefault(TimeZone.getTimeZone("GMT+1"));
                 Format formatter = new SimpleDateFormat("HH:mm");
                 s = formatter.format(ob.get(i).getCreatedAt());
-
-                test.append("\n" + s);
+                test.append("\n" + s );
 
             }
         } catch (com.parse.ParseException e) {
             e.printStackTrace();
         }
+
+        //Lecture du tableau contenant les dates
+        /*test.append("\n lecture tableau\n");
+        for (int i=0; i < listedate.size(); i++) {
+            test.append(listedate.get(i)+"\n");
+        }*/
+
+
+
 
         // Lance le service de localisation
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -247,7 +262,6 @@ public class AccueilActivity extends AppCompatActivity {
     }
 
     ////////////////////////////////// FONCTIONS AJOUTEES//////////
-
 
     // Affiche les places libres
     public void btn_google(View view) {
