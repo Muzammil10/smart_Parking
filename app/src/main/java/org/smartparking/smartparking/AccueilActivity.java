@@ -54,7 +54,8 @@ public class AccueilActivity extends AppCompatActivity {
     private int flag_autosave = 0;
     private TextView test;
     private int compteur;
-
+    private Button fromwherelooking;
+    private boolean flag_tracking_fromwherelooking=false;
 
     private List<ParseObject> ob;
     private String s;
@@ -70,9 +71,11 @@ public class AccueilActivity extends AppCompatActivity {
         saveplaceView = (Button) findViewById(R.id.btn_saveplace);
         autosave = (Button) findViewById(R.id.btn_autosave);
         test = (TextView) findViewById(R.id.textView2);
+       // fromwherelooking= (Button) findViewById(R.id.btn_showwherelooking);
 
         // Récupération base de données.
         date=new Date();
+
 
         //On indique qu'on recupère que les places libre marquée dans les 10 derniere minutes
         date.setMinutes(date.getMinutes()-10);
@@ -116,7 +119,35 @@ public class AccueilActivity extends AppCompatActivity {
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
 
-                // AJOUTE MANUELLEMENT UNE PLACE
+
+                //////////////////////////////////////////////// AFFICHE DOU LES UTILISATEURS REGARDE LES PLACE ///////////////////////////////////////////////
+                if (flag_tracking_fromwherelooking==true) {
+                    Log.d("GOOGLEMAP", "okay ça marche");
+                    // Montre d'où les utilisateurs regardent leur place
+                    final ParseObject looking_from = new ParseObject("Looking_From_Where");
+                    // On crée un Geopoint pour l'utiliser par la suite si nécessaire
+
+                    ParseGeoPoint point = new ParseGeoPoint(latitude, longitude);
+                    // On crée ces 2 colonnes pour facilité la récupération de ces 2 attributs
+                    // Stock la latitude et la longitutde dans la base de données
+                    looking_from.put("latitude", latitude);
+                    looking_from.put("longitude", longitude);
+                    looking_from.put("Location", point);
+                    looking_from.saveInBackground();
+
+
+                    Toast.makeText(getApplicationContext(), "Done", Toast.LENGTH_LONG).show();
+
+                    //Arrete l'écoute si on enregistre manuellement la place
+                    // Attention, ne pas oublier de remettre le flag à 0
+                    flag_tracking_fromwherelooking = false;
+                    locationManager.removeUpdates(locationListener);
+
+                    //  ON LANCE L'ACTIVITE APRES AVOIR OBTENU LES INFO DE L'UTILISATEUR
+                    launch_MapActivity();
+                }
+
+                ///////////////////////////////////// AJOUTE MANUELLEMENT UNE PLACE ////////////////////////////
                 if (flag_manuelle_save == 1) {
                     // Stock la latitude et la longitutde dans la base de données
                     final ParseObject places_libres = new ParseObject("Places_Libres");
@@ -140,7 +171,7 @@ public class AccueilActivity extends AppCompatActivity {
                 }
 
 
-                // AJOUTE AUTOMATIQUEMENT UNE PLACE
+                /////////////////////////////////////////// AJOUTE AUTOMATIQUEMENT UNE PLACE////////////////////////////////
                 if (flag_autosave == 1) {
 
                     // Permet de récupérer la vitesse de l'utilisateur grâce au GPS
@@ -175,6 +206,7 @@ public class AccueilActivity extends AppCompatActivity {
 
                         Toast.makeText(getApplicationContext(), "Place Libre Sauvegardée", Toast.LENGTH_LONG).show();
                         // On remet le compteur à 0 et on arrete le service
+                        flag_autosave=0;
                         compteur=0;
                         locationManager.removeUpdates(locationListener);
 
@@ -211,6 +243,7 @@ public class AccueilActivity extends AppCompatActivity {
         } else {
             btn_sauvegardeplace();
             btn_automatique_save();
+            btn_google();
         }
 
     }
@@ -223,6 +256,8 @@ public class AccueilActivity extends AppCompatActivity {
 
                     btn_sauvegardeplace();
                     btn_automatique_save();
+                    btn_google();
+
                 }
                 // return;
         }
@@ -261,14 +296,25 @@ public class AccueilActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    ////////////////////////////////// FONCTIONS AJOUTEES//////////
+    //////////////////////////////////GESTION DES BOUTTONS ///////////////////////
+
+    public void launch_MapActivity() {
+        startActivity(new Intent(this, MapsActivity.class));
+    }
+
 
     // Affiche les places libres
-    public void btn_google(View view) {
+    public void btn_google() {
 
-        Toast.makeText(getApplicationContext(), "Lancement Google Map", Toast.LENGTH_LONG).show();
+        launchgoogleView.setOnClickListener(new View.OnClickListener() {
 
-        startActivity(new Intent(this, MapsActivity.class));
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Chargement...", Toast.LENGTH_LONG).show();
+                flag_tracking_fromwherelooking=true;
+                locationManager.requestLocationUpdates("gps", 0, 0, locationListener);
+            }
+        });
 
     }
 
@@ -298,5 +344,11 @@ public class AccueilActivity extends AppCompatActivity {
 
     }
 
+    // Bouton pour afficher d'où les utilisateurs regardent les places
+    public void btn_showing_from_where_users_looking_places(View v){
+        // Message pour prévenir l'utilisateur
+        Toast.makeText(getApplicationContext(), "Chargemeent des informations", Toast.LENGTH_LONG).show();
+        startActivity(new Intent(this, MapUserActivity.class));
+    }
 
 }

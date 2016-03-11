@@ -46,7 +46,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng local_placelibre;
+
 
         // set map type
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -90,6 +90,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 } catch (com.parse.ParseException e) {
                     e.printStackTrace();
                 }
+
         // MARQUEUR POUR LES nouvelles places
         newplace=new Date();
 
