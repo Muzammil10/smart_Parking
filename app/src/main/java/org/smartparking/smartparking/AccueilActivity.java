@@ -55,6 +55,7 @@ public class AccueilActivity extends AppCompatActivity {
     private TextView test;
     private int compteur;
     private Button fromwherelooking;
+    private boolean a_pied=false;
     private boolean flag_tracking_fromwherelooking=false;
 
     private List<ParseObject> ob;
@@ -190,6 +191,12 @@ public class AccueilActivity extends AppCompatActivity {
 
                     // On choisit le compteur à partir duquel on enregistre la place, ici on choisira 15
                     if (compteur > 15) {
+                        a_pied=true;
+                        test.append("A PIED\n");
+                    }
+
+                    if (a_pied==true && vitesse > 1) {
+
                         //On enregistre la place
                         // Stock la latitude et la longitutde dans la base de données
                         final ParseObject places_libres = new ParseObject("Places_Libres");
@@ -208,6 +215,7 @@ public class AccueilActivity extends AppCompatActivity {
                         // On remet le compteur à 0 et on arrete le service
                         flag_autosave=0;
                         compteur=0;
+                        a_pied=false;
                         locationManager.removeUpdates(locationListener);
 
                     }
