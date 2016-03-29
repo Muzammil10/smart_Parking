@@ -9,11 +9,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="org.smartparking.smartparking.AccueilActivity">
 
-    <TextView
+    <!--<TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Bienvenue sur l'application Smart Parking"
-        android:id="@+id/textView2" />
+        android:id="@+id/textView2" /> -->
 
     <Button
         android:layout_width="wrap_content"
@@ -33,9 +33,9 @@
         android:layout_below="@+id/btn_launch_map"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="39dp"
-        android:layout_alignRight="@+id/btn_launch_map"
-        android:layout_alignEnd="@+id/btn_launch_map" />
+        android:layout_marginTop="46dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <Button
         android:layout_width="wrap_content"
@@ -46,10 +46,10 @@
         android:layout_below="@+id/btn_saveplace"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/btn_saveplace"
-        android:layout_alignEnd="@+id/btn_saveplace" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
-    <Button
+   <!-- <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/btn_autosave"
@@ -61,7 +61,7 @@
         android:text="d'ou les utilisateurs regardent les places"
         android:id="@+id/btn_showwherelooking"
         android:onClick="btn_showing_from_where_users_looking_places"
-        />
+        /> -->
 
 
 </RelativeLayout>

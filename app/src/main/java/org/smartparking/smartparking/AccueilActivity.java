@@ -52,9 +52,9 @@ public class AccueilActivity extends AppCompatActivity {
     private float vitesse;
     private int flag_manuelle_save = 0;
     private int flag_autosave = 0;
+    // Texte pour les tests
     private TextView test;
     private int compteur;
-    private Button fromwherelooking;
     private boolean a_pied=false;
     private boolean flag_tracking_fromwherelooking=false;
 
@@ -71,8 +71,7 @@ public class AccueilActivity extends AppCompatActivity {
         launchgoogleView = (Button) findViewById(R.id.btn_launch_map);
         saveplaceView = (Button) findViewById(R.id.btn_saveplace);
         autosave = (Button) findViewById(R.id.btn_autosave);
-        test = (TextView) findViewById(R.id.textView2);
-       // fromwherelooking= (Button) findViewById(R.id.btn_showwherelooking);
+        //test = (TextView) findViewById(R.id.textView2);
 
         // Récupération base de données.
         date=new Date();
@@ -93,7 +92,7 @@ public class AccueilActivity extends AppCompatActivity {
                 SimpleTimeZone.setDefault(TimeZone.getTimeZone("GMT+1"));
                 Format formatter = new SimpleDateFormat("HH:mm");
                 s = formatter.format(ob.get(i).getCreatedAt());
-                test.append("\n" + s );
+              //  test.append("\n" + s );
 
             }
         } catch (com.parse.ParseException e) {
@@ -122,6 +121,9 @@ public class AccueilActivity extends AppCompatActivity {
 
 
                 //////////////////////////////////////////////// AFFICHE DOU LES UTILISATEURS REGARDE LES PLACE ///////////////////////////////////////////////
+
+                // FONCTIONNALITE RAJOUTE SUR UNE INTERFACE WEB
+
                 if (flag_tracking_fromwherelooking==true) {
                     Log.d("GOOGLEMAP", "okay ça marche");
                     // Montre d'où les utilisateurs regardent leur place
@@ -192,7 +194,7 @@ public class AccueilActivity extends AppCompatActivity {
                     // On choisit le compteur à partir duquel on enregistre la place, ici on choisira 15
                     if (compteur > 15) {
                         a_pied=true;
-                        test.append("A PIED\n");
+                       // test.append("A PIED\n");
                     }
 
                     if (a_pied==true && vitesse > 1) {
@@ -220,7 +222,7 @@ public class AccueilActivity extends AppCompatActivity {
 
                     }
 
-                    test.append("Vitesse enregistré:" + vitesse + "compteur:" + compteur + "\n");
+                   // test.append("Vitesse enregistré:" + vitesse + "compteur:" + compteur + "\n");
                 }
             }
 
